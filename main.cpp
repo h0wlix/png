@@ -21,6 +21,21 @@ uint32_t Type;
 
 #pragma pack(pop)
 
+void read_chunks (vector<char> data) {
+    int offset = 8;
+    while (offset < data.size()) {
+        MainChunks* chunk_header = reinterpret_cast<MainChunks*>(&data[offset]);
+        uint32_t chunkLenght = reverseBytes(int(chunk_header->Lenght));
+
+        const char* chunkType = reinterpret_cast<const char*>(&data[offset+4]);
+        string outline(chunkType, 4);
+        cout << "Lenght: " << hex << chunkLenght <<endl;
+        cout << "Type: " << outline <<endl;
+        cout << "Offset: " << hex << offset << endl;
+        offset += sizeof(MainChunks) + chunkLenght+4;
+    }
+}
+
 int main()
 {
     ifstream png_file("D:\\dz\\png\\promo.png", ios::binary);
@@ -32,7 +47,7 @@ int main()
         png_file.seekg(0, ios::beg);
         vector<char> png_data(fileSize, 0);
         png_file.read(png_data.data(), fileSize);
-
+        read_chunks(png_data);
     }
     else {
         cout << "not open" << endl;
