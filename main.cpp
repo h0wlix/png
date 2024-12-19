@@ -23,4 +23,18 @@ uint32_t Type;
 
 int main()
 {
+    ifstream png_file("D:\\dz\\png\\promo.png", ios::binary);
+    if (png_file.is_open()){
+        cout << "open ok" << endl;
+        png_file.seekg(0, ios::end);
+        int fileSize = png_file.tellg();
+        cout << "File size: " << fileSize << endl;
+        png_file.seekg(0, ios::beg);
+        vector<char> png_data(fileSize, 0);
+        png_file.read(png_data.data(), fileSize);
+
+    }
+    else {
+        cout << "not open" << endl;
+        }
 }
